@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "331327162194",
+    "project_id": "pelagiaproj",
+    "storage_bucket": "pelagiaproj.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331327162194:android:ad14b4010f79ba6e5a5c8b",
+        "android_client_info": {
+          "package_name": "com.example.pelagia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5tpI3JKc_1dPx6HVLf28_H4IPfXb1sPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331327162194:android:f73fd6e707564ca55a5c8b",
+        "android_client_info": {
+          "package_name": "com.example.pelagiahotelapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5tpI3JKc_1dPx6HVLf28_H4IPfXb1sPM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

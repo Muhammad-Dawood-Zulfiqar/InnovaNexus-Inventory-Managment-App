@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#D9D9D9"
+    android:paddingTop="40dp"
+    android:id="@+id/main">
+
+    <!-- Back + Menu Icons Row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="left"
+        android:padding="20dp">
+
+        <ImageButton
+            android:id="@+id/backBtn"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/circle_white"
+            android:src="@drawable/ic_back"
+
+            android:scaleType="centerInside" />
+
+
+    </LinearLayout>
+
+    <!-- Title Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="25dp"
+        android:paddingTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Create an Account\nTo Find Your\nStillness"
+            android:textColor="#2E2E2E"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+
+        <!--        <TextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="Step Away"-->
+        <!--            android:textSize="36sp"-->
+        <!--            android:textStyle="bold"-->
+        <!--            android:textColor="#2E2E2E"/>-->
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start a Journey For Your Peace."
+            android:textSize="14sp"
+            android:textColor="#707070"
+            android:layout_marginTop="6dp"/>
+    </LinearLayout>
+
+    <!-- Bottom Rounded Login Container -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_top_white_login"
+        android:padding="24dp">
+        <!--name field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_input"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_name"
+                />
+
+            <EditText
+                android:id="@+id/inputName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Your Name Here..."
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+        <!-- Email Field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_input"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_email"
+                />
+
+            <EditText
+                android:id="@+id/inputEmail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Your Email Paste Here..."
+                android:textSize="14sp"
+                android:padding="10dp"/>
+        </LinearLayout>
+
+        <!-- Password Field -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_input"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_password"
+                />
+
+            <EditText
+                android:id="@+id/inputPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Your Password Paste Here..."
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+        <!-- confirm password -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/rounded_input"
+            android:gravity="center_vertical"
+            android:paddingHorizontal="15dp"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_password"
+                />
+
+            <EditText
+                android:id="@+id/confirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:background="@android:color/transparent"
+                android:hint="Confirm Your Password..."
+                android:textSize="14sp"
+                android:padding="10dp"
+                android:inputType="textPassword"/>
+        </LinearLayout>
+
+        <!-- Login Button -->
+        <Button
+            android:id="@+id/btnSignup"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:text="Continue Sign Up"
+            android:textColor="#FFF"
+            android:textSize="16sp"
+            android:background="@drawable/rounded_button_blue"
+            android:layout_marginTop="25dp"/>
+
+        <!-- Divider Text -->
+
+
+
+
+        ِ<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        >
+        <!-- Signup Text -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Already have an account? "
+            android:textColor="#707070"
+            android:textSize="14sp"
+
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:id="@+id/loginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Login"
+            android:textColor="@color/dark_blue"
+            android:textSize="14sp"
+
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
