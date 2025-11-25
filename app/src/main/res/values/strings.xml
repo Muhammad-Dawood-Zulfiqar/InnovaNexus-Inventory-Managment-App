@@ -1,3 +1,13 @@
 <resources>
-    <string name="app_name">Pelagia Hotel App</string>
+    <string name="app_name">Pelagia Admin</string>
+
+    <string-array name="hotel_categories">
+        <item>Luxury</item>
+        <item>Resort</item>
+        <item>Business</item>
+        <item>Budget</item>
+        <item>Apartment</item>
+        <item>Villa</item>
+        <item>Hostel</item>
+    </string-array>
 </resources>

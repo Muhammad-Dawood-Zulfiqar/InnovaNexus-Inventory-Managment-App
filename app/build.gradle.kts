@@ -36,7 +36,9 @@ dependencies {
     implementation("com.cloudinary:cloudinary-android:2.3.1")
     implementation("com.squareup.picasso:picasso:2.71828")
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+// If you need OkHttp integration (recommended for better performance)
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.16.0")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

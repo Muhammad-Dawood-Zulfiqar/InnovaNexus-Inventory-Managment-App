@@ -6,8 +6,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -19,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
+import com.google.android.material.card.MaterialCardView; // Added
+import com.google.android.material.materialswitch.MaterialSwitch; // Added
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -29,11 +32,17 @@ import java.util.Map;
 
 public class AdminAddHotel extends AppCompatActivity {
 
-    private EditText etHotelName, etCategory, etCity, etCountry, etLocation,
+    // UI Components
+    private EditText etHotelName, etCity, etCountry,
             etPrice, etBeds, etWashrooms, etTotalRooms, etRating, etDescription;
-    private CheckBox cbWifi, cbGaming, cbPopular;
-    private Button btnSelectImage, btnAddHotel;
+    private AutoCompleteTextView etCategory;
+
+    // Changed from CheckBox to MaterialSwitch to match new XML
+    private MaterialSwitch switchWifi, switchGaming, switchPopular;
+
+    private Button btnAddHotel;
     private ImageView ivHotelImage;
+    private MaterialCardView cardImageSelect; // Added to handle image click
 
     private Uri imageUri;
     private boolean isImageSelected = false;
@@ -47,13 +56,15 @@ public class AdminAddHotel extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_add_hotel);
+        setContentView(R.layout.activity_admin_add_hotel); // Ensure this matches your XML filename
 
         // Initialize Firestore
         db = FirebaseFirestore.getInstance();
 
         // Initialize views
         initViews();
+        setupCategoryDropdown();
+
         setupClickListeners();
 
         imagePickerLauncher = registerForActivityResult(
@@ -77,7 +88,6 @@ public class AdminAddHotel extends AppCompatActivity {
         // Location Details
         etCity = findViewById(R.id.etCity);
         etCountry = findViewById(R.id.etCountry);
-        etLocation = findViewById(R.id.etLocation);
 
         // Pricing & Capacity
         etPrice = findViewById(R.id.etPrice);
@@ -88,13 +98,13 @@ public class AdminAddHotel extends AppCompatActivity {
         // Rating
         etRating = findViewById(R.id.etRating);
 
-        // Amenities Checkboxes
-        cbWifi = findViewById(R.id.cbWifi);
-        cbGaming = findViewById(R.id.cbGaming);
-        cbPopular = findViewById(R.id.cbPopular);
+        // Amenities Switches (Updated IDs to match new XML)
+        switchWifi = findViewById(R.id.switchWifi);
+        switchGaming = findViewById(R.id.switchGaming);
+        switchPopular = findViewById(R.id.switchPopular);
 
-        // Image and Button
-        btnSelectImage = findViewById(R.id.btnSelectImage);
+        // Image Card and Button
+        cardImageSelect = findViewById(R.id.cardImageSelect); // The card triggers the image picker now
         btnAddHotel = findViewById(R.id.btnAddHotel);
         ivHotelImage = findViewById(R.id.ivHotelImage);
 
@@ -104,7 +114,8 @@ public class AdminAddHotel extends AppCompatActivity {
     }
 
     private void setupClickListeners() {
-        btnSelectImage.setOnClickListener(v -> openImagePicker());
+        // Changed: Clicking the Card opens the picker
+        cardImageSelect.setOnClickListener(v -> openImagePicker());
         btnAddHotel.setOnClickListener(v -> validateAndAddHotel());
     }
 
@@ -118,13 +129,13 @@ public class AdminAddHotel extends AppCompatActivity {
     private void validateAndAddHotel() {
         // Basic Information
         String name = etHotelName.getText().toString().trim();
-        String category = etCategory.getText().toString().trim().toUpperCase();
+        String category = etCategory.getText().toString().trim(); // Case sensitive match for dropdown
         String description = etDescription.getText().toString().trim();
 
         // Location Details
         String city = etCity.getText().toString().trim();
         String country = etCountry.getText().toString().trim();
-        String location = etLocation.getText().toString().trim();
+        String location = city + ", " + country; // Derived field
 
         // Pricing & Capacity
         String priceStr = etPrice.getText().toString().trim();
@@ -135,10 +146,10 @@ public class AdminAddHotel extends AppCompatActivity {
         // Rating
         String ratingStr = etRating.getText().toString().trim();
 
-        // Amenities
-        boolean hasWifi = cbWifi.isChecked();
-        boolean hasGaming = cbGaming.isChecked();
-        boolean isPopular = cbPopular.isChecked();
+        // Amenities (Use isChecked() on Switches)
+        boolean hasWifi = switchWifi.isChecked();
+        boolean hasGaming = switchGaming.isChecked();
+        boolean isPopular = switchPopular.isChecked();
 
         // Validation - Basic Information
         if (TextUtils.isEmpty(name)) {
@@ -148,8 +159,10 @@ public class AdminAddHotel extends AppCompatActivity {
         }
 
         if (TextUtils.isEmpty(category)) {
-            etCategory.setError("Category is required (e.g., LUXURY, BUDGET)");
+            etCategory.setError("Category is required");
             etCategory.requestFocus();
+            // Force show dropdown if empty
+            etCategory.showDropDown();
             return;
         }
 
@@ -169,12 +182,6 @@ public class AdminAddHotel extends AppCompatActivity {
         if (TextUtils.isEmpty(country)) {
             etCountry.setError("Country is required");
             etCountry.requestFocus();
-            return;
-        }
-
-        if (TextUtils.isEmpty(location)) {
-            etLocation.setError("Location description is required");
-            etLocation.requestFocus();
             return;
         }
 
@@ -288,6 +295,29 @@ public class AdminAddHotel extends AppCompatActivity {
                 totalRooms, rating, hasWifi, hasGaming, isPopular);
     }
 
+    private void setupCategoryDropdown() {
+        // Ensure these match your strings.xml or keeping them here is fine too
+        String[] categories = {
+                "City", "Beach", "Mountain", "Village",
+                "Luxury", "Resort", "Business", "Budget"
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                categories
+        );
+        etCategory.setAdapter(adapter);
+
+        // Set click listener to show dropdown when clicked
+        etCategory.setOnClickListener(v -> etCategory.showDropDown());
+
+        // Also show on focus
+        etCategory.setOnFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) etCategory.showDropDown();
+        });
+    }
+
     private void addHotelWithImage(String name, String category, String description, String city, String country,
                                    String location, double price, int beds, int washrooms,
                                    int totalRooms, double rating, boolean wifi, boolean gaming,
@@ -317,23 +347,21 @@ public class AdminAddHotel extends AppCompatActivity {
                         @Override
                         public void onSuccess(String requestId, Map resultData) {
                             Log.d(TAG, "Cloudinary upload successful: " + requestId);
-                            Log.d(TAG, "Cloudinary result data: " + resultData.toString());
 
                             String imageUrl = (String) resultData.get("url");
                             if (imageUrl != null) {
+                                if (imageUrl.startsWith("http://")) {
+                                    imageUrl = imageUrl.replace("http://", "https://");
+                                }
                                 Log.d(TAG, "Image URL from Cloudinary: " + imageUrl);
-                                progressDialog.setMessage("Saving hotel details...");
 
-                                // Create images array with the uploaded image
-                                List<String> images = new ArrayList<>();
-                                images.add(imageUrl);
-
+                                // Need to run UI updates/Firestore on main thread usually,
+                                // but Firestore handles background threads well.
                                 saveHotelToFirestore(name, category, description, city, country, location,
                                         price, beds, washrooms, totalRooms, rating,
-                                        wifi, gaming, popular, images);
+                                        wifi, gaming, popular, imageUrl);
                             } else {
                                 progressDialog.dismiss();
-                                Log.e(TAG, "Cloudinary URL is null");
                                 Toast.makeText(AdminAddHotel.this,
                                         "Image upload failed: No URL returned", Toast.LENGTH_LONG).show();
                             }
@@ -342,7 +370,7 @@ public class AdminAddHotel extends AppCompatActivity {
                         @Override
                         public void onError(String requestId, ErrorInfo error) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "Cloudinary upload error: " + error.getDescription() + ", Code: " + error.getCode());
+                            Log.e(TAG, "Cloudinary error: " + error.getDescription());
                             Toast.makeText(AdminAddHotel.this,
                                     "Image upload failed: " + error.getDescription(), Toast.LENGTH_LONG).show();
                         }
@@ -350,7 +378,6 @@ public class AdminAddHotel extends AppCompatActivity {
                         @Override
                         public void onReschedule(String requestId, ErrorInfo error) {
                             progressDialog.dismiss();
-                            Log.e(TAG, "Cloudinary upload rescheduled: " + error.getDescription());
                             Toast.makeText(AdminAddHotel.this,
                                     "Image upload failed, please try again", Toast.LENGTH_SHORT).show();
                         }
@@ -367,17 +394,18 @@ public class AdminAddHotel extends AppCompatActivity {
     private void saveHotelToFirestore(String name, String category, String description, String city, String country,
                                       String location, double price, int beds, int washrooms,
                                       int totalRooms, double rating, boolean wifi, boolean gaming,
-                                      boolean popular, List<String> images) {
+                                      boolean popular, String images) {
+
+        // Just updating the message, dialog is already showing
+        runOnUiThread(() -> progressDialog.setMessage("Saving hotel details..."));
+
         String hotelId = db.collection("hotels").document().getId();
 
         Map<String, Object> hotel = new HashMap<>();
-        // Use field names that match the Hotel class exactly
         hotel.put("id", hotelId);
         hotel.put("name", name);
         hotel.put("category", category);
         hotel.put("description", description);
-        hotel.put("city", city);
-        hotel.put("country", country);
         hotel.put("location", location);
         hotel.put("price", price);
         hotel.put("beds", beds);
@@ -388,56 +416,19 @@ public class AdminAddHotel extends AppCompatActivity {
         hotel.put("gaming", gaming);
         hotel.put("popular", popular);
         hotel.put("images", images);
-
-        // Timestamp (optional - you can remove if not needed)
         hotel.put("createdAt", FieldValue.serverTimestamp());
-
-        Log.d(TAG, "Saving hotel to Firestore: " + hotel.toString());
 
         db.collection("hotels")
                 .document(hotelId)
                 .set(hotel)
                 .addOnCompleteListener(task -> {
                     progressDialog.dismiss();
-
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "Hotel saved successfully to Firestore: " + hotelId);
-                        Toast.makeText(AdminAddHotel.this,
-                                "Hotel added successfully!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AdminAddHotel.this, "Hotel added successfully!", Toast.LENGTH_SHORT).show();
                         finish();
                     } else {
-                        Log.e(TAG, "Firestore save failed: " + task.getException().getMessage());
-                        Toast.makeText(AdminAddHotel.this,
-                                "Failed to add hotel: " + task.getException().getMessage(),
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(AdminAddHotel.this, "Failed: " + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
-    }
-
-    private void clearForm() {
-        // Clear all fields
-        etHotelName.setText("");
-        etCategory.setText("");
-        etDescription.setText("");
-        etCity.setText("");
-        etCountry.setText("");
-        etLocation.setText("");
-        etPrice.setText("");
-        etBeds.setText("");
-        etWashrooms.setText("");
-        etTotalRooms.setText("");
-        etRating.setText("");
-
-        // Uncheck checkboxes
-        cbWifi.setChecked(false);
-        cbGaming.setChecked(false);
-        cbPopular.setChecked(false);
-
-        // Reset image
-        ivHotelImage.setImageResource(R.drawable.hotel_image_placeholder);
-        isImageSelected = false;
-        imageUri = null;
-
-        Log.d(TAG, "Form cleared");
     }
 }

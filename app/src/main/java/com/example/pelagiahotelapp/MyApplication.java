@@ -23,12 +23,12 @@ public class MyApplication extends Application {
     private void initCloudinary() {
         try {
             Map config = new HashMap();
-            config.put("cloud_name", "dhroeylg2"); // Replace with your actual cloud name
-            config.put("api_key", "793559997499565");       // Replace with your actual API key
-            config.put("api_secret", "YKyTw_mX1OqS6k1wcuro2lqGbZQ"); // Replace with your actual API secret
-
+            config.put("cloud_name", "dhroeylg2");
+            config.put("api_key", "793559997499565");
+            config.put("api_secret", "YKyTw_mX1OqS6k1wcuro2lqGbZQ");
+            config.put("secure", true);
             MediaManager.init(this, config);
-            Log.d(TAG, "Cloudinary initialized successfully");
+            Log.d(TAG, "Cloudinary initialized successfully with https");
         } catch (Exception e) {
             Log.e(TAG, "Cloudinary initialization failed: " + e.getMessage());
         }

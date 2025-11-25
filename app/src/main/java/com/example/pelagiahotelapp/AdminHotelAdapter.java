@@ -1,11 +1,15 @@
 package com.example.pelagiahotelapp;
 
+import static android.widget.Toast.LENGTH_LONG;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,7 +57,8 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
 
         // Load hotel image using your ImageLoader class
         if (hotel.getImages() != null && !hotel.getImages().isEmpty()) {
-            ImageLoader.loadHotelImage(hotel.getImages().get(0), holder.ivHotelImage);
+            Log.d("Cloudinary","going inside ImageLoader to load image");
+            ImageLoader.loadHotelImage(hotel.getImages(), holder.ivHotelImage);
         } else {
             holder.ivHotelImage.setImageResource(android.R.drawable.ic_menu_gallery);
         }

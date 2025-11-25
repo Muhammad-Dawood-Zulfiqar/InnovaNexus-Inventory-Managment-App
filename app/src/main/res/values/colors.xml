@@ -33,6 +33,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
+    <color name="gray_light">#F5F5F5</color>
+    <color name="gray_dark">#757575</color>
     <!-- Custom colors for our app -->
     <color name="colorPrimary">#2196F3</color>
     <color name="colorPrimaryDark">#1976D2</color>

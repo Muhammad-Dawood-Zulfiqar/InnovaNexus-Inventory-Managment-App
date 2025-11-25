@@ -29,6 +29,7 @@ String name;
             return insets;
         });
         new Handler().postDelayed(() -> {
+
             FirebaseAuth mAuth;
             mAuth = FirebaseAuth.getInstance();
 
