@@ -1,6 +1,4 @@
-package com.example.pelagiahotelapp;
-
-import static android.widget.Toast.LENGTH_LONG;
+package com.example.pelagiahotelapp.Adapters;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,10 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.pelagiahotelapp.ModelClasses.Hotel;
+import com.example.pelagiahotelapp.Utilities.ImageLoader;
+import com.example.pelagiahotelapp.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -21,14 +23,21 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
     private List<Hotel> hotelList;
     private Context context;
     private OnDeleteClickListener onDeleteClickListener;
-
+    private OnUpdateClickListner onUpdateClickListner;
     public interface OnDeleteClickListener {
         void onDeleteClick(Hotel hotel);
     }
 
-    public AdminHotelAdapter(List<Hotel> hotelList, OnDeleteClickListener onDeleteClickListener) {
+    public interface OnUpdateClickListner{
+        void onUpdateClick(Hotel hotel);
+
+    }
+
+
+    public AdminHotelAdapter(List<Hotel> hotelList, OnDeleteClickListener onDeleteClickListener,OnUpdateClickListner onUpdateClickListner) {
         this.hotelList = hotelList;
         this.onDeleteClickListener = onDeleteClickListener;
+        this.onUpdateClickListner=onUpdateClickListner;
     }
 
     @NonNull
@@ -58,7 +67,7 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
         // Load hotel image using your ImageLoader class
         if (hotel.getImages() != null && !hotel.getImages().isEmpty()) {
             Log.d("Cloudinary","going inside ImageLoader to load image");
-            ImageLoader.loadHotelImage(hotel.getImages(), holder.ivHotelImage);
+            ImageLoader.loadHotelImage(hotel.getImages().get(0), holder.ivHotelImage);
         } else {
             holder.ivHotelImage.setImageResource(android.R.drawable.ic_menu_gallery);
         }
@@ -68,6 +77,12 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
             if (onDeleteClickListener != null) {
                 onDeleteClickListener.onDeleteClick(hotel);
             }
+        });
+        holder.btnUpdate.setOnClickListener(v -> {
+            if(onDeleteClickListener!=null)
+            {
+
+onUpdateClickListner.onUpdateClick(hotel);            }
         });
     }
 
@@ -79,7 +94,8 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
     public static class HotelViewHolder extends RecyclerView.ViewHolder {
         TextView tvHotelName, tvHotelLocation, tvHotelPrice, tvHotelDescription;
         ImageView ivHotelImage;
-        TextView btnDelete;
+        MaterialButton btnDelete;
+        MaterialButton btnUpdate;
 
         public HotelViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -89,6 +105,7 @@ public class AdminHotelAdapter extends RecyclerView.Adapter<AdminHotelAdapter.Ho
             tvHotelDescription = itemView.findViewById(R.id.tvHotelDescription);
             ivHotelImage = itemView.findViewById(R.id.ivHotelImage);
             btnDelete = itemView.findViewById(R.id.btnDelete);
+            btnUpdate=itemView.findViewById(R.id.btnUpdate);
         }
     }
 }

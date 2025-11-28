@@ -1,10 +1,12 @@
-package com.example.pelagiahotelapp;
+package com.example.pelagiahotelapp.ModelClasses;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class Hotel implements Serializable {
     private String id;
+
+    private String ownerId;
     private String name;
     private String city;
     private String country;
@@ -16,7 +18,7 @@ public class Hotel implements Serializable {
     private boolean wifi;
     private boolean gaming;
     private int totalRooms;
-    private String images;
+    private List<String> images;
     private boolean popular;
     private String category;
     private String description; // Added description field
@@ -25,11 +27,13 @@ public class Hotel implements Serializable {
     public Hotel() {}
 
     // Updated constructor with description
-    public Hotel(String id, String name, String city, String country, String location,
+
+    public Hotel(String id,String ownerId, String name, String city, String country, String location,
                  double price, double rating, int beds, int washrooms, boolean wifi,
-                 boolean gaming, int totalRooms, String images,
+                 boolean gaming, int totalRooms, List<String> images,
                  boolean popular, String category, String description) {
         this.id = id;
+        this.ownerId=ownerId;
         this.name = name;
         this.city = city;
         this.country = country;
@@ -84,8 +88,8 @@ public class Hotel implements Serializable {
     public int getTotalRooms() { return totalRooms; }
     public void setTotalRooms(int totalRooms) { this.totalRooms = totalRooms; }
 
-    public String getImages() { return images; }
-    public void setImages(String images) { this.images = images; }
+    public List<String> getImages() { return images; }
+    public void setImages(List<String> images) { this.images = images; }
 
     public boolean isPopular() { return popular; }
     public void setPopular(boolean popular) { this.popular = popular; }
@@ -95,4 +99,12 @@ public class Hotel implements Serializable {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public String getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
+    }
 }

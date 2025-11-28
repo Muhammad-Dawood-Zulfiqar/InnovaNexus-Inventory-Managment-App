@@ -1,4 +1,4 @@
-package com.example.pelagiahotelapp;
+package com.example.pelagiahotelapp.ModelClasses;
 
 import android.app.Application;
 import android.util.Log;
@@ -18,6 +18,7 @@ public class MyApplication extends Application {
 
         // Initialize Cloudinary
         initCloudinary();
+
     }
 
     private void initCloudinary() {
