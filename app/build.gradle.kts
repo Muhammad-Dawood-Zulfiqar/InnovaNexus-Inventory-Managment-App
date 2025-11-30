@@ -39,6 +39,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 // If you need OkHttp integration (recommended for better performance)
     implementation("com.github.bumptech.glide:okhttp3-integration:4.16.0")
+    //maps
+    implementation("com.google.android.gms:play-services-location:21.3.0")
+// For: org.osmdroid.*
+// (MapView, Marker, GeoPoint, Configuration, etc.)
+    implementation("org.osmdroid:osmdroid-android:6.1.20")
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

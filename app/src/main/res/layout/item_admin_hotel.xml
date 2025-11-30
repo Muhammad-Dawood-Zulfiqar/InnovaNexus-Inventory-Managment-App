@@ -4,17 +4,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="3dp"
-    app:cardBackgroundColor="#FFFFFF">
+    android:layout_marginHorizontal="24dp"
+    android:layout_marginVertical="10dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/line_color"
+    app:strokeWidth="1dp"
+    app:cardBackgroundColor="@color/white_custom">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,11 +24,11 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="90dp"
-                android:layout_height="90dp"
-                app:cardCornerRadius="12dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:cardBackgroundColor="#F0F0F0">
+                app:cardBackgroundColor="@color/seafoam">
 
                 <ImageView
                     android:id="@+id/ivHotelImage"
@@ -47,10 +49,10 @@
                     android:id="@+id/tvHotelName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Hotel Name"
+                    android:text="Grand Hotel"
                     android:textSize="18sp"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="#1A1A1A"
+                    android:textColor="@color/charcoal_black"
                     android:maxLines="1"
                     android:ellipsize="end" />
 
@@ -60,14 +62,12 @@
                     android:orientation="horizontal"
                     android:gravity="center_vertical"
                     android:layout_marginTop="4dp">
-
                     <ImageView
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         android:src="@drawable/ic_location_pin"
-                        app:tint="#757575"
+                        app:tint="@color/grey_text"
                         android:layout_marginEnd="4dp" />
-
                     <TextView
                         android:id="@+id/tvHotelLocation"
                         android:layout_width="0dp"
@@ -75,7 +75,7 @@
                         android:layout_weight="1"
                         android:text="Location"
                         android:textSize="13sp"
-                        android:textColor="#757575"
+                        android:textColor="@color/grey_text"
                         android:maxLines="1"
                         android:ellipsize="end" />
                 </LinearLayout>
@@ -85,20 +85,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="$120 / night"
-                    android:textSize="16sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
-                    android:textColor="#2C9AB7"
+                    android:textColor="@color/deep_turquoise"
                     android:layout_marginTop="6dp" />
 
                 <TextView
                     android:id="@+id/tvHotelDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Description goes here..."
+                    android:text="Luxury stay with ocean view..."
                     android:textSize="12sp"
-                    android:textColor="#9E9E9E"
+                    android:textColor="@color/grey_text"
                     android:layout_marginTop="2dp"
-                    android:maxLines="2"
+                    android:maxLines="1"
                     android:ellipsize="end" />
             </LinearLayout>
         </LinearLayout>
@@ -107,8 +107,8 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="12dp"
-            android:background="#F0F0F0" />
+            android:layout_marginBottom="16dp"
+            android:background="@color/subtle_grey" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,31 +117,34 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnUpdate"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="Update"
-                android:textColor="#2C9AB7"
-                app:strokeColor="#2C9AB7"
+                android:text="Edit Details"
+                android:textColor="@color/charcoal_black"
+                app:strokeColor="@color/line_color"
                 app:strokeWidth="1dp"
-                app:cornerRadius="15dp" />
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_edit"
+                app:iconTint="@color/charcoal_black"
+                app:iconSize="16dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnDelete"
-                style="@style/Widget.MaterialComponents.Button"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginStart="8dp"
-                android:text="Delete"
-                android:textColor="@color/red"
-                app:backgroundTint="#FFEBEE"
-
-                android:stateListAnimator="@null"
-                app:elevation="0dp"
-                app:cornerRadius="15dp" />
+                android:text="Remove"
+                android:textColor="#D32F2F"
+                app:icon="@drawable/ic_delete"
+                app:iconTint="#D32F2F"
+                app:iconSize="18dp"
+                app:backgroundTint="#FFF0F0"
+                app:cornerRadius="12dp" />
         </LinearLayout>
 
     </LinearLayout>

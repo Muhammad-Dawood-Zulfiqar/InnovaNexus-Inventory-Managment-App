@@ -205,11 +205,42 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location"
+                        android:text="Location Details"
                         android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="#1A1A1A"
-                        android:layout_marginBottom="16dp"/>
+                        android:layout_marginBottom="12dp"/>
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnSelectLocation"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Select Location on Map"
+                        android:textColor="#2C9AB7"
+                        app:icon="@drawable/ic_location_pin"
+                        app:iconTint="#2C9AB7"
+                        app:strokeColor="#2C9AB7"
+                        app:cornerRadius="8dp"/>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        app:boxStrokeColor="#2C9AB7"
+                        app:hintTextColor="#2C9AB7"
+                        android:hint="Selected Address">
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="false"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:inputType="none" />
+                    </com.google.android.material.textfield.TextInputLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -230,7 +261,10 @@
                                 android:id="@+id/etCity"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
+                                android:focusable="false"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:inputType="none" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -246,12 +280,14 @@
                                 android:id="@+id/etCountry"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:inputType="textCapWords" />
+                                android:focusable="false"
+                                android:clickable="false"
+                                android:cursorVisible="false"
+                                android:inputType="none" />
                         </com.google.android.material.textfield.TextInputLayout>
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -419,19 +455,7 @@
                         android:text="Gaming Setup Available"
                         android:textColor="#424242"/>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginVertical="8dp"
-                        android:background="#B2DFDB" />
-
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/switchPopular"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Mark as 'Popular'"
-                        android:textStyle="bold"
-                        android:textColor="#2C9AB7" />
+               
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>

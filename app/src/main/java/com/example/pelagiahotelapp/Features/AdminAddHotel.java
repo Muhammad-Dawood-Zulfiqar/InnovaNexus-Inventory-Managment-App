@@ -24,7 +24,9 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.pelagiahotelapp.Adapters.SelectedImagesAdapter;
+import com.example.pelagiahotelapp.HelperActivities.LocationPicker;
 import com.example.pelagiahotelapp.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,14 +43,22 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AdminAddHotel extends AppCompatActivity {
 
     // UI Components
-    private EditText etHotelName, etCity, etCountry,
-            etPrice, etBeds, etWashrooms, etTotalRooms, etRating, etDescription;
+    private EditText etHotelName, etPrice, etBeds, etWashrooms, etTotalRooms, etRating, etDescription;
+    // Location UI components
+    private EditText etCity, etCountry, etAddress;
+    private MaterialButton btnSelectLocation;
+
     private AutoCompleteTextView etCategory;
-    private MaterialSwitch switchWifi, switchGaming, switchPopular;
+    private MaterialSwitch switchWifi, switchGaming;
     private Button btnAddHotel;
     private MaterialCardView cardImageSelect;
     private RecyclerView rvSelectedImages;
     private ImageView ivHotelImage;
+
+    // Location Data Variables
+    private double selectedLatitude = 0.0;
+    private double selectedLongitude = 0.0;
+    private String selectedAddressString = "";
 
     // Multiple images
     private List<Uri> selectedImageUris = new ArrayList<>();
@@ -61,6 +71,7 @@ public class AdminAddHotel extends AppCompatActivity {
     private static final String TAG = "AdminAddHotel";
 
     private ActivityResultLauncher<Intent> imagePickerLauncher;
+    private ActivityResultLauncher<Intent> locationPickerLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,11 +89,31 @@ public class AdminAddHotel extends AppCompatActivity {
         setupImagesRecyclerView();
         setupClickListeners();
 
+        // 1. Setup Image Picker Launcher
         imagePickerLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         handleImageSelection(result.getData());
+                    }
+                });
+
+        // 2. Setup Location Picker Launcher
+        locationPickerLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                        Intent data = result.getData();
+                        selectedLatitude = data.getDoubleExtra("latitude", 0.0);
+                        selectedLongitude = data.getDoubleExtra("longitude", 0.0);
+                        selectedAddressString = data.getStringExtra("address");
+                        String city = data.getStringExtra("city");
+                        String country = data.getStringExtra("country");
+
+                        // Update UI
+                        etAddress.setText(selectedAddressString);
+                        etCity.setText(city);
+                        etCountry.setText(country);
                     }
                 });
     }
@@ -96,6 +127,8 @@ public class AdminAddHotel extends AppCompatActivity {
         // Location Details
         etCity = findViewById(R.id.etCity);
         etCountry = findViewById(R.id.etCountry);
+        etAddress = findViewById(R.id.etAddress); // Ensure this ID exists in XML
+        btnSelectLocation = findViewById(R.id.btnSelectLocation); // Ensure this ID exists in XML
 
         // Pricing & Capacity
         etPrice = findViewById(R.id.etPrice);
@@ -107,13 +140,12 @@ public class AdminAddHotel extends AppCompatActivity {
         // Amenities Switches
         switchWifi = findViewById(R.id.switchWifi);
         switchGaming = findViewById(R.id.switchGaming);
-        switchPopular = findViewById(R.id.switchPopular);
 
         // Image Selection
         cardImageSelect = findViewById(R.id.cardImageSelect);
         btnAddHotel = findViewById(R.id.btnAddHotel);
         ivHotelImage = findViewById(R.id.ivHotelImage);
-        rvSelectedImages = findViewById(R.id.rvSelectedImages); // Add this RecyclerView to your XML
+        rvSelectedImages = findViewById(R.id.rvSelectedImages);
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setTitle("Please wait");
@@ -122,19 +154,23 @@ public class AdminAddHotel extends AppCompatActivity {
 
     private void setupImagesRecyclerView() {
         rvSelectedImages.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        imagesAdapter = new SelectedImagesAdapter(selectedImageUris, new SelectedImagesAdapter.OnImageRemoveListener() {
-            @Override
-            public void onImageRemove(int position) {
-                selectedImageUris.remove(position);
-                imagesAdapter.notifyDataSetChanged();
-                updateImageSelectionUI();
-            }
+        imagesAdapter = new SelectedImagesAdapter(selectedImageUris, position -> {
+            selectedImageUris.remove(position);
+            imagesAdapter.notifyDataSetChanged();
+            updateImageSelectionUI();
         });
         rvSelectedImages.setAdapter(imagesAdapter);
     }
 
     private void setupClickListeners() {
         cardImageSelect.setOnClickListener(v -> openImagePicker());
+
+        // Open Location Picker
+        btnSelectLocation.setOnClickListener(v -> {
+            Intent intent = new Intent(AdminAddHotel.this, LocationPicker.class);
+            locationPickerLauncher.launch(intent);
+        });
+
         btnAddHotel.setOnClickListener(v -> validateAndAddHotel());
     }
 
@@ -187,10 +223,11 @@ public class AdminAddHotel extends AppCompatActivity {
         String category = etCategory.getText().toString().trim();
         String description = etDescription.getText().toString().trim();
 
-        // Location Details
+        // Location Details (From TextViews now populated by Picker)
         String city = etCity.getText().toString().trim();
         String country = etCountry.getText().toString().trim();
-        String location = city + ", " + country;
+        // Use the specific address returned from picker, or fallback to city+country
+        String location = selectedAddressString.isEmpty() ? city + ", " + country : selectedAddressString;
 
         // Pricing & Capacity
         String priceStr = etPrice.getText().toString().trim();
@@ -202,7 +239,7 @@ public class AdminAddHotel extends AppCompatActivity {
         // Amenities
         boolean hasWifi = switchWifi.isChecked();
         boolean hasGaming = switchGaming.isChecked();
-        boolean isPopular = switchPopular.isChecked();
+        boolean isPopular = false;
 
         // Validation - Basic Information
         if (TextUtils.isEmpty(name)) {
@@ -225,15 +262,14 @@ public class AdminAddHotel extends AppCompatActivity {
         }
 
         // Validation - Location Details
-        if (TextUtils.isEmpty(city)) {
-            etCity.setError("City is required");
-            etCity.requestFocus();
+        if (TextUtils.isEmpty(city) || TextUtils.isEmpty(country)) {
+            Toast.makeText(this, "Please select a location on the map", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (TextUtils.isEmpty(country)) {
-            etCountry.setError("Country is required");
-            etCountry.requestFocus();
+        // Ensure lat/long were actually captured
+        if (selectedLatitude == 0.0 && selectedLongitude == 0.0) {
+            Toast.makeText(this, "Invalid location coordinates. Please select location again.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -343,8 +379,10 @@ public class AdminAddHotel extends AppCompatActivity {
         }
 
         Log.d(TAG, "Starting hotel addition process");
-        addHotelWithImages(name, category, description, city, country, location, price, beds, washrooms,
-                totalRooms, rating, hasWifi, hasGaming, isPopular);
+
+        // Pass the latitude and longitude to the upload function
+        addHotelWithImages(name, category, description, city, country, location, selectedLatitude, selectedLongitude,
+                price, beds, washrooms, totalRooms, rating, hasWifi, hasGaming, isPopular);
     }
 
     private void setupCategoryDropdown() {
@@ -366,8 +404,10 @@ public class AdminAddHotel extends AppCompatActivity {
         });
     }
 
+    // Updated method signature to accept lat/long
     private void addHotelWithImages(String name, String category, String description, String city, String country,
-                                    String location, double price, int beds, int washrooms,
+                                    String location, double latitude, double longitude,
+                                    double price, int beds, int washrooms,
                                     int totalRooms, double rating, boolean wifi, boolean gaming,
                                     boolean popular) {
         progressDialog.setMessage("Uploading images...");
@@ -408,7 +448,6 @@ public class AdminAddHotel extends AppCompatActivity {
                                         imageUrl = imageUrl.replace("http://", "https://");
                                     }
                                     imageUrls.add(imageUrl);
-                                    Log.d(TAG, "Image URL added: " + imageUrl);
                                 }
 
                                 int completed = uploadCount.incrementAndGet();
@@ -417,7 +456,7 @@ public class AdminAddHotel extends AppCompatActivity {
                                     runOnUiThread(() -> {
                                         progressDialog.setMessage("Saving hotel details...");
                                         saveHotelToFirestore(name, category, description, city, country, location,
-                                                price, beds, washrooms, totalRooms, rating,
+                                                latitude, longitude, price, beds, washrooms, totalRooms, rating,
                                                 wifi, gaming, popular, imageUrls);
                                     });
                                 }
@@ -426,7 +465,7 @@ public class AdminAddHotel extends AppCompatActivity {
                             @Override
                             public void onError(String requestId, ErrorInfo error) {
                                 progressDialog.dismiss();
-                                Log.e(TAG, "Cloudinary error for image " + (currentIndex + 1) + ": " + error.getDescription());
+                                Log.e(TAG, "Cloudinary error: " + error.getDescription());
                                 runOnUiThread(() -> Toast.makeText(AdminAddHotel.this,
                                         "Image upload failed: " + error.getDescription(), Toast.LENGTH_LONG).show());
                             }
@@ -442,30 +481,36 @@ public class AdminAddHotel extends AppCompatActivity {
 
             } catch (Exception e) {
                 progressDialog.dismiss();
-                Log.e(TAG, "Exception during Cloudinary upload for image " + (currentIndex + 1) + ": " + e.getMessage(), e);
                 Toast.makeText(this, "Upload failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 return;
             }
         }
     }
 
+    // Updated to save lat/long to Firestore
     private void saveHotelToFirestore(String name, String category, String description, String city, String country,
-                                      String location, double price, int beds, int washrooms,
+                                      String location, double latitude, double longitude,
+                                      double price, int beds, int washrooms,
                                       int totalRooms, double rating, boolean wifi, boolean gaming,
                                       boolean popular, List<String> imageUrls) {
 
         String hotelId = db.collection("hotels").document().getId();
-        String ownerId = currentUser.getUid(); // Get current user ID
+        String ownerId = currentUser.getUid();
 
         Map<String, Object> hotel = new HashMap<>();
         hotel.put("id", hotelId);
-        hotel.put("ownerId", ownerId); // Store owner ID
+        hotel.put("ownerId", ownerId);
         hotel.put("name", name);
         hotel.put("category", category);
         hotel.put("description", description);
         hotel.put("city", city);
         hotel.put("country", country);
         hotel.put("location", location);
+
+        // Add Latitude and Longitude
+        hotel.put("latitude", latitude);
+        hotel.put("longitude", longitude);
+
         hotel.put("price", price);
         hotel.put("beds", beds);
         hotel.put("washrooms", washrooms);
@@ -474,7 +519,7 @@ public class AdminAddHotel extends AppCompatActivity {
         hotel.put("wifi", wifi);
         hotel.put("gaming", gaming);
         hotel.put("popular", popular);
-        hotel.put("images", imageUrls); // Store as array of strings
+        hotel.put("images", imageUrls);
         hotel.put("createdAt", FieldValue.serverTimestamp());
 
         db.collection("hotels")

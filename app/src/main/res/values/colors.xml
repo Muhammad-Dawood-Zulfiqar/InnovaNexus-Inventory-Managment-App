@@ -33,8 +33,30 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
 
+
+
+
+    <color name="colorPrimary">#1565C0</color>
+    <color name="colorPrimaryVariant">#0D47A1</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorSecondary">#FFB300</color>
+    <color name="colorSecondaryVariant">#FF8F00</color>
+    <color name="colorOnSecondary">#000000</color>
+    <color name="colorBackground">#F5F6F8</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorOnSurface">#212121</color>
+    <color name="status_lost">#D32F2F</color>
+    <color name="status_found">#388E3C</color>
+    <color name="status_pending">#757575</color>
+    <color name="status_lost_bg">#FFEBEE</color>
+    <color name="status_found_bg">#E8F5E9</color>
+
+
+
+
+
     <!-- Custom colors for our app -->
-    <color name="colorPrimary">#2196F3</color>
+
     <color name="colorPrimaryDark">#1976D2</color>
     <color name="colorAccent">#2196F3</color>
     <color name="background">#FFFFFF</color>
@@ -66,4 +88,17 @@
     <color name="nav_item_selected">#191C1D</color>
     <color name="nav_item_unselected">#74777F</color>
     <color name="border_color">#E0E0E0</color>
+
+
+
+
+    <color name="seafoam">#D6EFED</color>
+    <color name="aqua_mist">#CAE9FF</color>
+    <color name="pale_blue">#E3F6F5</color>
+    <color name="driftwood_beige">#F5F5DC</color>
+
+    <color name="white_custom">#FEFEFE</color>
+    <color name="coastal_fog">#F0F5F9</color> <color name="subtle_grey">#F0F0F1</color>  <color name="grey_text">#757575</color>
+
+    <color name="charcoal_black">#2B2B2B</color> <color name="deep_turquoise">#2C9AB7</color> <color name="line_color">#DDE5E9</color>
 </resources>

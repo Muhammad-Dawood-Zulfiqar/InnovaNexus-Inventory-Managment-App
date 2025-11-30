@@ -1,66 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?figml version="1.0"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/dark_blue"
+    android:background="@drawable/bg_splash_gradient"
     tools:context=".SplashScreen">
 
-    <TextView
-        android:id="@+id/tvName"
+    <!-- 1. Center Content Group -->
+    <LinearLayout
+        android:id="@+id/centerContent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/urbanist_semibold"
-        android:text="INNOVASTAY"
-        android:textColor="@color/white"
-        android:textSize="48sp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.45">
 
-    <!--    <View-->
-    <!--        android:layout_width="20dp"-->
-    <!--        android:layout_height="10dp"-->
-    <!--        android:background="@color/white"-->
-    <!--         />-->
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        <!-- Logo Icon -->
+        <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_hotel_2"
+            android:layout_marginBottom="16dp"
+            app:tint="@color/deep_turquoise" />
+
+        <!-- App Name -->
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/urbanist_semibold"
+            android:text="INNOVASTAY"
+            android:textColor="@color/charcoal_black"
+            android:textSize="40sp"
+            android:letterSpacing="0.05"
+            android:textStyle="bold" />
+
+        <!-- Tagline -->
+        <TextView
+            android:id="@+id/tvTagline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Experience Luxury"
+            android:fontFamily="sans-serif-light"
+            android:textColor="@color/grey_text"
+            android:textSize="16sp"
+            android:letterSpacing="0.2" />
+
+    </LinearLayout>
+
+    <!-- 2. Bottom Loading Indicator -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminateTint="@color/deep_turquoise"
+        android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        app:layout_constraintTop_toBottomOf="@id/tvName"
-        >
-
-        <!-- Bottom indicator -->
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="6dp"
-            android:orientation="horizontal"
-            android:gravity="center"
-
-
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="40dp">
-
-            <View
-                android:layout_width="40dp"
-                android:layout_height="4dp"
-                android:background="@drawable/test"/>
-
-            <View
-                android:layout_width="6dp"
-                android:layout_height="6dp"
-                android:layout_marginLeft="6dp"
-                android:background="@drawable/indicator_circle"/>
-        </LinearLayout>
-
-    </RelativeLayout>
+    <!-- Version Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v1.0"
+        android:textSize="12sp"
+        android:textColor="@color/grey_text"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

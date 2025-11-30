@@ -7,6 +7,12 @@ public class Hotel implements Serializable {
     private String id;
 
     private String ownerId;
+
+
+
+    private double longitude;
+    private double latitude;
+
     private String name;
     private String city;
     private String country;
@@ -28,7 +34,7 @@ public class Hotel implements Serializable {
 
     // Updated constructor with description
 
-    public Hotel(String id,String ownerId, String name, String city, String country, String location,
+    public Hotel(String id,String ownerId,double longitude,double latitude, String name, String city, String country, String location,
                  double price, double rating, int beds, int washrooms, boolean wifi,
                  boolean gaming, int totalRooms, List<String> images,
                  boolean popular, String category, String description) {
@@ -50,6 +56,24 @@ public class Hotel implements Serializable {
         this.category = category;
         this.description = description;
     }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+
 
     // Getters and setters
     public String getId() { return id; }
