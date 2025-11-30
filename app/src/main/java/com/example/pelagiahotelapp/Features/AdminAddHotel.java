@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AdminAddHotel extends AppCompatActivity {
 
     // UI Components
-    private EditText etHotelName, etPrice, etBeds, etWashrooms, etTotalRooms, etRating, etDescription;
+    private EditText etHotelName, etPrice, etBeds, etWashrooms, etTotalRooms, etDescription;
     // Location UI components
     private EditText etCity, etCountry, etAddress;
     private MaterialButton btnSelectLocation;
@@ -135,7 +135,6 @@ public class AdminAddHotel extends AppCompatActivity {
         etBeds = findViewById(R.id.etBeds);
         etWashrooms = findViewById(R.id.etWashrooms);
         etTotalRooms = findViewById(R.id.etTotalRooms);
-        etRating = findViewById(R.id.etRating);
 
         // Amenities Switches
         switchWifi = findViewById(R.id.switchWifi);
@@ -234,7 +233,6 @@ public class AdminAddHotel extends AppCompatActivity {
         String bedsStr = etBeds.getText().toString().trim();
         String washroomsStr = etWashrooms.getText().toString().trim();
         String totalRoomsStr = etTotalRooms.getText().toString().trim();
-        String ratingStr = etRating.getText().toString().trim();
 
         // Amenities
         boolean hasWifi = switchWifi.isChecked();
@@ -298,14 +296,10 @@ public class AdminAddHotel extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(ratingStr)) {
-            etRating.setError("Rating is required");
-            etRating.requestFocus();
-            return;
-        }
+
 
         // Numeric validation
-        double price, rating;
+        double price;
         int beds, washrooms, totalRooms;
 
         try {
@@ -360,18 +354,7 @@ public class AdminAddHotel extends AppCompatActivity {
             return;
         }
 
-        try {
-            rating = Double.parseDouble(ratingStr);
-            if (rating < 0 || rating > 5) {
-                etRating.setError("Rating must be between 0 and 5");
-                etRating.requestFocus();
-                return;
-            }
-        } catch (NumberFormatException e) {
-            etRating.setError("Invalid rating format");
-            etRating.requestFocus();
-            return;
-        }
+
 
         if (selectedImageUris.isEmpty()) {
             Toast.makeText(this, "Please select at least one hotel image", Toast.LENGTH_SHORT).show();
@@ -382,7 +365,7 @@ public class AdminAddHotel extends AppCompatActivity {
 
         // Pass the latitude and longitude to the upload function
         addHotelWithImages(name, category, description, city, country, location, selectedLatitude, selectedLongitude,
-                price, beds, washrooms, totalRooms, rating, hasWifi, hasGaming, isPopular);
+                price, beds, washrooms, totalRooms, hasWifi, hasGaming, isPopular);
     }
 
     private void setupCategoryDropdown() {
@@ -408,7 +391,7 @@ public class AdminAddHotel extends AppCompatActivity {
     private void addHotelWithImages(String name, String category, String description, String city, String country,
                                     String location, double latitude, double longitude,
                                     double price, int beds, int washrooms,
-                                    int totalRooms, double rating, boolean wifi, boolean gaming,
+                                    int totalRooms, boolean wifi, boolean gaming,
                                     boolean popular) {
         progressDialog.setMessage("Uploading images...");
         progressDialog.show();
@@ -456,7 +439,7 @@ public class AdminAddHotel extends AppCompatActivity {
                                     runOnUiThread(() -> {
                                         progressDialog.setMessage("Saving hotel details...");
                                         saveHotelToFirestore(name, category, description, city, country, location,
-                                                latitude, longitude, price, beds, washrooms, totalRooms, rating,
+                                                latitude, longitude, price, beds, washrooms, totalRooms,
                                                 wifi, gaming, popular, imageUrls);
                                     });
                                 }
@@ -491,7 +474,7 @@ public class AdminAddHotel extends AppCompatActivity {
     private void saveHotelToFirestore(String name, String category, String description, String city, String country,
                                       String location, double latitude, double longitude,
                                       double price, int beds, int washrooms,
-                                      int totalRooms, double rating, boolean wifi, boolean gaming,
+                                      int totalRooms, boolean wifi, boolean gaming,
                                       boolean popular, List<String> imageUrls) {
 
         String hotelId = db.collection("hotels").document().getId();
@@ -515,7 +498,6 @@ public class AdminAddHotel extends AppCompatActivity {
         hotel.put("beds", beds);
         hotel.put("washrooms", washrooms);
         hotel.put("totalRooms", totalRooms);
-        hotel.put("rating", rating);
         hotel.put("wifi", wifi);
         hotel.put("gaming", gaming);
         hotel.put("popular", popular);

@@ -18,7 +18,6 @@ public class Hotel implements Serializable {
     private String country;
     private String location;
     private double price;
-    private double rating;
     private int beds;
     private int washrooms;
     private boolean wifi;
@@ -35,7 +34,7 @@ public class Hotel implements Serializable {
     // Updated constructor with description
 
     public Hotel(String id,String ownerId,double longitude,double latitude, String name, String city, String country, String location,
-                 double price, double rating, int beds, int washrooms, boolean wifi,
+                 double price, int beds, int washrooms, boolean wifi,
                  boolean gaming, int totalRooms, List<String> images,
                  boolean popular, String category, String description) {
         this.id = id;
@@ -45,7 +44,8 @@ public class Hotel implements Serializable {
         this.country = country;
         this.location = location;
         this.price = price;
-        this.rating = rating;
+        this.longitude=longitude;
+        this.latitude=latitude;
         this.beds = beds;
         this.washrooms = washrooms;
         this.wifi = wifi;
@@ -94,8 +94,6 @@ public class Hotel implements Serializable {
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
-    public double getRating() { return rating; }
-    public void setRating(double rating) { this.rating = rating; }
 
     public int getBeds() { return beds; }
     public void setBeds(int beds) { this.beds = beds; }
