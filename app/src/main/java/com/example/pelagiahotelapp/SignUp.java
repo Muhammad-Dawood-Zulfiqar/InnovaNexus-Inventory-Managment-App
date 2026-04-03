@@ -16,18 +16,21 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-//import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
     private EditText inputName, inputEmail, inputPassword, confirmPassword;
-    private Button signupBtn; // Note: XML ID is 'loginBtn'
+    private Button signupBtn;
     private TextView loginText;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    // Store the original button text
+    private CharSequence originalBtnText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +42,10 @@ public class SignUp extends AppCompatActivity {
             return insets;
         });
         init();
+
+        // Capture original button text after init()
+        originalBtnText = signupBtn.getText();
+
         signupBtn.setOnClickListener(v -> {
             String name = inputName.getText().toString().trim();
             String email = inputEmail.getText().toString().trim();
@@ -56,6 +63,10 @@ public class SignUp extends AppCompatActivity {
                 return;
             }
 
+            // --- Start of added UI feedback code ---
+            setButtonProcessingState(true);
+            // --- End of added UI feedback code ---
+
             // --- 3. Firebase Registration ---
             mAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, task -> {
@@ -63,6 +74,9 @@ public class SignUp extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             saveNewUserData(user, name);
                         } else {
+                            // --- Restore button state on Auth failure ---
+                            setButtonProcessingState(false);
+                            // --------------------------------------------
                             String errorMessage = task.getException() != null ? task.getException().getMessage() : "Registration failed.";
                             Toast.makeText(this, "Sign Up Failed: " + errorMessage, Toast.LENGTH_LONG).show();
                         }
@@ -74,6 +88,19 @@ public class SignUp extends AppCompatActivity {
             finish();
         });
     }
+
+    // --- Added Helper Method for UI State Management ---
+    private void setButtonProcessingState(boolean isProcessing) {
+        if (isProcessing) {
+            signupBtn.setText("Processing...");
+            signupBtn.setEnabled(false);
+        } else {
+            signupBtn.setText(originalBtnText);
+            signupBtn.setEnabled(true);
+        }
+    }
+    // ---------------------------------------------------
+
     private void saveNewUserData(FirebaseUser user, String name) {
         String userId = user.getUid();
 
@@ -85,14 +112,21 @@ public class SignUp extends AppCompatActivity {
         db.collection("users").document(userId)
                 .set(userData)
                 .addOnSuccessListener(aVoid -> {
+                    // --- Restore button state (optional as we are finishing) ---
+                    setButtonProcessingState(false);
+                    // ---------------------------------------------------------
                     Toast.makeText(this, "Account created successfully!", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(SignUp.this, com.example.pelagiahotelapp.MainActivity.class));
                     finish();
                 })
                 .addOnFailureListener(e -> {
+                    // --- Restore button state on DB failure ---
+                    setButtonProcessingState(false);
+                    // ------------------------------------------
                     Toast.makeText(this, "Error saving profile data. Please try again.", Toast.LENGTH_LONG).show();
                 });
     }
+
     public void init()
     {
         mAuth = FirebaseAuth.getInstance();

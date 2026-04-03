@@ -7,7 +7,6 @@
     android:paddingTop="40dp"
     android:id="@+id/main">
 
-    <!-- Back + Menu Icons Row -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,13 +20,10 @@
             android:layout_height="45dp"
             android:background="@drawable/circle_white"
             android:src="@drawable/ic_back"
-
             android:scaleType="centerInside" />
-
 
     </LinearLayout>
 
-    <!-- Title Area -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,14 +39,6 @@
             android:textSize="36sp"
             android:textStyle="bold" />
 
-        <!--        <TextView-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:text="Step Away"-->
-        <!--            android:textSize="36sp"-->
-        <!--            android:textStyle="bold"-->
-        <!--            android:textColor="#2E2E2E"/>-->
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +48,6 @@
             android:layout_marginTop="6dp"/>
     </LinearLayout>
 
-    <!-- Bottom Rounded Login Container -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -68,7 +55,7 @@
         android:orientation="vertical"
         android:background="@drawable/rounded_top_white_login"
         android:padding="24dp">
-        <!--name field -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -92,10 +79,11 @@
                 android:hint="Your Name Here..."
                 android:textSize="14sp"
                 android:padding="10dp"
-                android:inputType="textPassword"/>
+                android:inputType="textPersonName"
+                android:maxLines="1"
+                android:imeOptions="actionNext"/>
         </LinearLayout>
 
-        <!-- Email Field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -118,10 +106,12 @@
                 android:background="@android:color/transparent"
                 android:hint="Your Email Paste Here..."
                 android:textSize="14sp"
-                android:padding="10dp"/>
+                android:padding="10dp"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:imeOptions="actionNext"/>
         </LinearLayout>
 
-        <!-- Password Field -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -145,10 +135,11 @@
                 android:hint="Your Password Paste Here..."
                 android:textSize="14sp"
                 android:padding="10dp"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:imeOptions="actionNext"/>
         </LinearLayout>
 
-        <!-- confirm password -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="55dp"
@@ -172,10 +163,11 @@
                 android:hint="Confirm Your Password..."
                 android:textSize="14sp"
                 android:padding="10dp"
-                android:inputType="textPassword"/>
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:imeOptions="actionDone"/>
         </LinearLayout>
 
-        <!-- Login Button -->
         <Button
             android:id="@+id/btnSignup"
             android:layout_width="match_parent"
@@ -186,39 +178,31 @@
             android:background="@drawable/rounded_button_blue"
             android:layout_marginTop="25dp"/>
 
-        <!-- Divider Text -->
-
-
-
-
-        ِ<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        >
-        <!-- Signup Text -->
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Already have an account? "
-            android:textColor="#707070"
-            android:textSize="14sp"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="12dp">
 
-            android:layout_gravity="center"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Already have an account? "
+                android:textColor="#707070"
+                android:textSize="14sp"
+                android:layout_gravity="center"/>
 
-        <TextView
-            android:id="@+id/loginText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=" Login"
-            android:textColor="@color/dark_blue"
-            android:textSize="14sp"
+            <TextView
+                android:id="@+id/loginText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" Login"
+                android:textColor="@color/dark_blue"
+                android:textSize="14sp"
+                android:layout_gravity="center"/>
 
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

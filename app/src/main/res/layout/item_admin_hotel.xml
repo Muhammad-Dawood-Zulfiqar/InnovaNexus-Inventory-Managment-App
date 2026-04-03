@@ -122,7 +122,7 @@
                 android:layout_height="48dp"
                 android:layout_weight="1"
                 android:layout_marginEnd="8dp"
-                android:text="Edit Details"
+                android:text="Edit"
                 android:textColor="@color/charcoal_black"
                 app:strokeColor="@color/line_color"
                 app:strokeWidth="1dp"

@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat; // Import ContextCompat for color
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -26,6 +27,9 @@ public class Login extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     private FirebaseFirestore db;
+
+    // Store the original button text and background color (or rely on XML default)
+    private CharSequence originalBtnText;
 
     @Override
     protected void onStart() {
@@ -49,10 +53,15 @@ public class Login extends AppCompatActivity {
             return insets;
         });
         init();
+
+        // Capture original button text after init()
+        originalBtnText = btnLogin.getText();
+
         signupText.setOnClickListener(v -> {
             startActivity(new Intent(Login.this, SignUp.class));
             finish();
         });
+
         btnLogin.setOnClickListener(v -> {
             String email = inputEmail.getText().toString().trim();
             String password = inputPassword.getText().toString().trim();
@@ -62,13 +71,17 @@ public class Login extends AppCompatActivity {
                 return;
             }
 
+            // --- Start of added UI feedback code ---
+            setButtonProcessingState(true);
+            // --- End of added UI feedback code ---
+
             signInUser(email, password);
         });
     }
 
     public void init()
     {
-        Toast.makeText(this, "In init", Toast.LENGTH_SHORT).show();
+        // Removed: Toast.makeText(this, "In init", Toast.LENGTH_SHORT).show();
 
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -77,9 +90,26 @@ public class Login extends AppCompatActivity {
         inputPassword = findViewById(R.id.inputPassword);
         btnLogin = findViewById(R.id.btnLogin);
         signupText = findViewById(R.id.signupText);
-
     }
 
+    // --- Added Helper Method for UI State Management ---
+    private void setButtonProcessingState(boolean isProcessing) {
+        if (isProcessing) {
+            // Change text and disable button
+            btnLogin.setText("Processing...");
+            btnLogin.setEnabled(false);
+            // Optionally change background color (requires a color resource, assuming R.color.colorPrimary or similar exists)
+            // If you don't have a specific color, you can skip this part, but it's good practice for feedback.
+            // Example: btnLogin.setBackgroundColor(ContextCompat.getColor(this, R.color.grey));
+        } else {
+            // Restore original text and enable button
+            btnLogin.setText(originalBtnText);
+            btnLogin.setEnabled(true);
+            // Optionally restore background color to its original state (if changed in 'isProcessing' block)
+            // Example: btnLogin.setBackgroundColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        }
+    }
+    // --- End of Added Helper Method ---
 
 
     public void signInUser(String email, String password) {
@@ -91,6 +121,9 @@ public class Login extends AppCompatActivity {
 
                         db.collection("users").document(userId).get()
                                 .addOnCompleteListener(dbTask -> {
+                                    // --- Restore button state after database check ---
+                                    setButtonProcessingState(false);
+                                    // ---------------------------------------------------
                                     if (dbTask.isSuccessful()) {
                                         DocumentSnapshot document = dbTask.getResult();
 
@@ -115,6 +148,9 @@ public class Login extends AppCompatActivity {
                                     }
                                 });
                     } else {
+                        // --- Restore button state on Firebase authentication failure ---
+                        setButtonProcessingState(false);
+                        // -----------------------------------------------------------------
                         String errorMessage = task.getException() != null ? task.getException().getMessage() : "Authentication failed.";
                         Toast.makeText(this, "Login failed: " + errorMessage, Toast.LENGTH_LONG).show();
                     }
